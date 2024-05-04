@@ -1,5 +1,5 @@
 joblib
-PIL
+Pillow
 io
 requests
 streamlit
