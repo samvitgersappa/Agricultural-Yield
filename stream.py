@@ -6,7 +6,8 @@ from io import BytesIO
 import pickle
 
 # Load the trained model
-model = pickle.load(open('trained_model.pkl', 'rb'))
+#model = pickle.load(open('trained_model.pkl', 'rb'))
+model = joblib.load('trained_model.pkl')
 
 # Dictionary mapping integer values to crop names
 crop_map = {
