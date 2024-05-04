@@ -3,7 +3,7 @@ Pillow
 requests
 streamlit
 Python-IO
-scikit-learn==1.0.2
+scikit-learn
 pickle
 streamlit==1.12.0
 pandas==1.2.5
