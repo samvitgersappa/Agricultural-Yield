@@ -2,3 +2,4 @@ joblib
 PIL
 io
 requests
+streamlit
