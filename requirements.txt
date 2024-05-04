@@ -3,6 +3,5 @@ Pillow
 requests
 streamlit
 Python-IO
-pickle
 streamlit==1.12.0
 pandas==1.2.5
