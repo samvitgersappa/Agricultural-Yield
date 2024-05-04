@@ -3,9 +3,10 @@ import joblib
 import requests
 from PIL import Image
 from io import BytesIO
+import pickle
 
 # Load the trained model
-model = joblib.load('trained_model.pkl')
+model = pickle.load(open('trained_model.pkl', 'rb'))
 
 # Dictionary mapping integer values to crop names
 crop_map = {
