@@ -1,4 +1,4 @@
 joblib
-Image
-BytesIO
+PIL
+io
 requests
