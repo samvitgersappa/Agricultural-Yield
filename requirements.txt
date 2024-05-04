@@ -2,3 +2,4 @@ joblib
 Pillow
 requests
 streamlit
+Python-IO
