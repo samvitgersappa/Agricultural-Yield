@@ -3,4 +3,4 @@ Pillow
 requests
 streamlit
 Python-IO
-scikit-learn-1.4.2
+scikit-learn==1.4.2
