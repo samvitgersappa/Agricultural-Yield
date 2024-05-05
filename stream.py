@@ -85,7 +85,7 @@ state_map = {
 }
 
 # Streamlit UI
-st.title('Agricultural Yield Predictor')
+st.title('AgriSmart: Crop Yield Forecasting and Recommendation App')
 
 # Display image
 response = requests.get("https://source.unsplash.com/600x400/?agriculture")
@@ -93,7 +93,7 @@ image = Image.open(BytesIO(response.content))
 st.image(image, use_column_width=True)
 
 # Add tabs for Prediction and Recommendation
-tabs = st.sidebar.radio("Select Task:", ("Predict Crop Yield", "Fertilizer and Pesticide Calculator"))
+tabs = st.sidebar.radio("Select Requirement:", ("Predict Crop Yield", "Fertilizer and Pesticide Calculator"))
 
 if tabs == "Predict Crop Yield":
     
@@ -115,7 +115,7 @@ if tabs == "Predict Crop Yield":
 
             # Display prediction
         st.subheader('Yield Prediction:')
-        st.success(f"The predicted yield is {prediction[0]}")
+        st.success(f"The predicted yield is {prediction[0] per unit area}")
 
 if tabs == "Fertilizer and Pesticide Calculator":
     
