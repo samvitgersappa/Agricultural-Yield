@@ -1,13 +1,54 @@
+import pandas as pd
 import streamlit as st
-import joblib
 import requests
 from PIL import Image
 from io import BytesIO
+import joblib
+from sklearn.ensemble import ExtraTreesRegressor
+
+def train_and_recommend(crop, season, state, area, production, annual_rainfall):
+
+    # Map crop name to its corresponding integer value
+    crop_id = [key for key, value in crop_map.items() if value == crop][0]
+
+    # Map season name to its corresponding integer value
+    season_id = [key for key, value in season_map.items() if value == season][0]
+
+    # Map state name to its corresponding integer value
+    state_id = [key for key, value in state_map.items() if value == state][0]
+
+    df = pd.read_csv('crop_yield.csv')
+
+    unique_values = df['Crop'].unique()
+    for i, crop in enumerate(unique_values, 1):
+        df['Crop'].replace(crop, i, inplace=True)
+    unique_values1 = df['Season'].unique()
+    for i, crop in enumerate(unique_values1, 1):
+        df['Season'].replace(crop, i, inplace=True)
+    unique_values2 = df['State'].unique()
+    for i, crop in enumerate(unique_values2, 1):
+        df['State'].replace(crop, i, inplace=True)
+
+    X = df[['Season', 'State', 'Area', 'Production', 'Annual_Rainfall', 'Crop']]
+    y = df[['Fertilizer','Pesticide']]
+
+    model = ExtraTreesRegressor(n_estimators=100, random_state=42)
+    model.fit(X, y)
+
+    # Prepare input features as a list or numpy array
+    input_features = [[season_id, state_id, area, production, annual_rainfall, crop_id]]
+
+    # Make prediction using the trained model
+    prediction = model.predict(input_features)
+
+    # Extract fertilizer and pesticide recommendations from the prediction
+    max_yield_fertilizer, max_yield_pesticide = prediction[0]
+
+    return max_yield_fertilizer, max_yield_pesticide
 
 
-# Load the trained model
-#model = pickle.load(open('trained_model.pkl', 'rb'))
-model = joblib.load('trained_model.pkl')
+# Load the recommendation model
+recommendation_model = joblib.load('trained_model.pkl')
 
 # Dictionary mapping integer values to crop names
 crop_map = {
@@ -47,44 +88,52 @@ state_map = {
 st.title('Agricultural Yield Predictor')
 
 # Display image
-
 response = requests.get("https://source.unsplash.com/600x400/?agriculture")
 image = Image.open(BytesIO(response.content))
 st.image(image, use_column_width=True)
 
-# Input field for Crop
-crop = st.selectbox('Select Crop:', options=list(crop_map.values()), index=0)
+# Add tabs for Prediction and Recommendation
+tabs = st.sidebar.radio("Select Task:", ("Prediction", "Recommendation"))
 
-# Input field for Season
-season = st.selectbox('Select Season:', options=list(season_map.values()), index=0)
+if tabs == "Prediction":
+    
+        # Input fields for prediction
+    st.subheader("Prediction Inputs")
+    crop = st.selectbox('Select Crop:', options=list(crop_map.values()), index=0)
+    season = st.selectbox('Select Season:', options=list(season_map.values()), index=0)
+    state = st.selectbox('Select State:', options=list(state_map.values()), index=0)
+    area = st.number_input('Enter Area (in hectares):', value=0.0)
+    production = st.number_input('Enter Production (in metric tons):', value=0.0)
+    annual_rainfall = st.number_input('Enter Annual Rainfall (in mm):', value=0.0)
+    fertilizer = st.number_input('Enter Fertilizer:', value=0.0)
+    pesticide = st.number_input('Enter Pesticide:', value=0.0)
 
-# Input field for State
-state = st.selectbox('Select State:', options=list(state_map.values()), index=0)
+        # Make prediction button
+    if st.button('Predict'):
+            # Call the train_and_recommend function
+        prediction = train_and_recommend(crop, season, state, area, production, annual_rainfall)
 
-# Input fields for other features
-area = st.number_input('Enter Area (in hectares):', value=0.0)
-production = st.number_input('Enter Production (in metric tons):', value=0.0)
-annual_rainfall = st.number_input('Enter Annual Rainfall (in mm):', value=0.0)
-fertilizer = st.number_input('Enter Fertilizer (in kg):', value=0.0)
-pesticide = st.number_input('Enter Pesticide (in kg):', value=0.0)
+            # Display prediction
+        st.subheader('Yield Prediction:')
+        st.success(f"The predicted yield is {prediction[0]}")
 
-# Make prediction button
-if st.button('Predict'):
-    # Map selected crop name back to its corresponding integer value
-    crop_id = [key for key, value in crop_map.items() if value == crop][0]
+if tabs == "Recommendation":
     
-    # Map selected season name back to its corresponding integer value
-    season_id = [key for key, value in season_map.items() if value == season][0]
-    
-    # Map selected state name back to its corresponding integer value
-    state_id = [key for key, value in state_map.items() if value == state][0]
-    
-    # Prepare input features as a list or numpy array
-    input_features = [[crop_id, season_id, state_id, area, production, annual_rainfall, fertilizer, pesticide]]
-    
-    # Make prediction using the loaded model
-    prediction = model.predict(input_features)
-    
-    # Display prediction
-    st.subheader('Yield Prediction:')
-    st.success(f"The predicted yield is {prediction[0]} per unit area")
+        # Input fields for recommendation
+    st.subheader("Recommendation Inputs")
+    crop = st.selectbox('Select Crop:', options=list(crop_map.values()), index=0)
+    season = st.selectbox('Select Season:', options=list(season_map.values()), index=0)
+    state = st.selectbox('Select State:', options=list(state_map.values()), index=0)
+    area = st.number_input('Enter Area (in hectares):', value=0.0)
+    production = st.number_input('Enter Production (in metric tons):', value=0.0)
+    annual_rainfall = st.number_input('Enter Annual Rainfall (in mm):', value=0.0)
+
+        # Make recommendation button
+    if st.button('Recommend'):
+            # Call the train_and_recommend function
+        fertilizer, pesticide = train_and_recommend(crop, season, state, area, production, annual_rainfall)
+
+            # Display recommendation
+        st.subheader('Recommendation:')
+        st.success(f"Recommended Fertilizer: {fertilizer} Kg")
+        st.success(f"Recommended Pesticide: {pesticide} Kg")
