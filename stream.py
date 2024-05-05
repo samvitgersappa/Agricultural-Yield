@@ -95,7 +95,7 @@ st.image(image, use_column_width=True)
 # Add tabs for Prediction and Recommendation
 tabs = st.sidebar.radio("Select Task:", ("Prediction", "Recommendation"))
 
-if tabs == "Prediction":
+if tabs == "Predict Crop Yield":
     
         # Input fields for prediction
     st.subheader("Prediction Inputs")
@@ -117,7 +117,7 @@ if tabs == "Prediction":
         st.subheader('Yield Prediction:')
         st.success(f"The predicted yield is {prediction[0]}")
 
-if tabs == "Recommendation":
+if tabs == "Fertilizer and Pesticide Calculator":
     
         # Input fields for recommendation
     st.subheader("Recommendation Inputs")
