@@ -62,11 +62,11 @@ season = st.selectbox('Select Season:', options=list(season_map.values()), index
 state = st.selectbox('Select State:', options=list(state_map.values()), index=0)
 
 # Input fields for other features
-area = st.number_input('Enter Area:', value=0.0)
-production = st.number_input('Enter Production:', value=0.0)
-annual_rainfall = st.number_input('Enter Annual Rainfall:', value=0.0)
-fertilizer = st.number_input('Enter Fertilizer:', value=0.0)
-pesticide = st.number_input('Enter Pesticide:', value=0.0)
+area = st.number_input('Enter Area (in hectares):', value=0.0)
+production = st.number_input('Enter Production (in metric tons):', value=0.0)
+annual_rainfall = st.number_input('Enter Annual Rainfall (in mm):', value=0.0)
+fertilizer = st.number_input('Enter Fertilizer (in kg):', value=0.0)
+pesticide = st.number_input('Enter Pesticide (in kg):', value=0.0)
 
 # Make prediction button
 if st.button('Predict'):
@@ -87,4 +87,4 @@ if st.button('Predict'):
     
     # Display prediction
     st.subheader('Yield Prediction:')
-    st.success(f"The predicted yield is {prediction[0]}")
+    st.success(f"The predicted yield is {prediction[0]} per unit area")
