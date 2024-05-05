@@ -93,7 +93,7 @@ image = Image.open(BytesIO(response.content))
 st.image(image, use_column_width=True)
 
 # Add tabs for Prediction and Recommendation
-tabs = st.sidebar.radio("Select Task:", ("Prediction", "Recommendation"))
+tabs = st.sidebar.radio("Select Task:", ("Predict Crop Yield", "Fertilizer and Pesticide Calculator"))
 
 if tabs == "Predict Crop Yield":
     
