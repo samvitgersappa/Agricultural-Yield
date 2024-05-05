@@ -115,7 +115,7 @@ if tabs == "Predict Crop Yield":
 
             # Display prediction
         st.subheader('Yield Prediction:')
-        st.success(f"The predicted yield is {prediction[0] per unit area}")
+        st.success(f"The predicted yield is {prediction[0]} per unit area")
 
 if tabs == "Fertilizer and Pesticide Calculator":
     
