@@ -87,17 +87,29 @@ state_map = {
 # Streamlit UI
 st.title('AgriSmart: Crop Yield Forecasting and Recommendation App')
 
+tabs = st.columns(2)
+if tabs[0].button('Predict Crop Yield'):
+    st.session_state.show_yield = True
+    st.session_state.show_calculator = False
+if tabs[1].button('Smart Fertilizer and Pesticide Calculator'):
+    st.session_state.show_yield = False
+    st.session_state.show_calculator = True
+
+# Display the selected subpage
+if 'show_yield' not in st.session_state:
+    st.session_state.show_yield = True
+if 'show_calculator' not in st.session_state:
+    st.session_state.show_calculator = False
+
 # Display image
 response = requests.get("https://source.unsplash.com/600x400/?agriculture")
 image = Image.open(BytesIO(response.content))
 st.image(image, use_column_width=True)
 
-# Add tabs for Prediction and Recommendation
-tabs = st.sidebar.radio("Select Requirement:", ("Predict Crop Yield", "Smart Fertilizer and Pesticide Calculator"))
+# Add buttons for Prediction and Recommendation
 
-if tabs == "Predict Crop Yield":
-    
-        # Input fields for prediction
+
+if st.session_state.show_yield:
     st.subheader("Prediction Inputs")
     crop = st.selectbox('Select Crop:', options=list(crop_map.values()), index=0)
     season = st.selectbox('Select Season:', options=list(season_map.values()), index=0)
@@ -108,18 +120,12 @@ if tabs == "Predict Crop Yield":
     fertilizer = st.number_input('Enter Fertilizer:', value=0.0)
     pesticide = st.number_input('Enter Pesticide:', value=0.0)
 
-        # Make prediction button
     if st.button('Predict'):
-            # Call the train_and_recommend function
         prediction = train_and_recommend(crop, season, state, area, production, annual_rainfall)
-
-            # Display prediction
         st.subheader('Yield Prediction:')
         st.success(f"The predicted yield is {prediction[0]} per unit area")
 
-if tabs == "Smart Fertilizer and Pesticide Calculator":
-    
-        # Input fields for recommendation
+elif st.session_state.show_calculator:
     st.subheader("Recommendation Inputs")
     crop = st.selectbox('Select Crop:', options=list(crop_map.values()), index=0)
     season = st.selectbox('Select Season:', options=list(season_map.values()), index=0)
@@ -128,12 +134,8 @@ if tabs == "Smart Fertilizer and Pesticide Calculator":
     production = st.number_input('Enter Production (in metric tons):', value=0.0)
     annual_rainfall = st.number_input('Enter Annual Rainfall (in mm):', value=0.0)
 
-        # Make recommendation button
     if st.button('Recommend'):
-            # Call the train_and_recommend function
         fertilizer, pesticide = train_and_recommend(crop, season, state, area, production, annual_rainfall)
-
-            # Display recommendation
         st.subheader('Recommendation:')
         st.success(f"Recommended Fertilizer: {fertilizer} Kg")
         st.success(f"Recommended Pesticide: {pesticide} Kg")
