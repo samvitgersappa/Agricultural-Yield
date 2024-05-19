@@ -85,7 +85,64 @@ state_map = {
 }
 
 # Streamlit UI
+st.set_page_config(page_title="AgriSmart", page_icon="🌾", layout="wide")
 st.title('AgriSmart: Crop Yield Forecasting and Recommendation App')
+
+# Custom CSS
+st.markdown("""
+    <style>
+        .stButton>button {
+            border-radius: 8px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            transition-duration: 0.4s;
+            cursor: pointer;
+        }
+
+        .stButton>button:hover {
+            background-color: white;
+            color: black;
+            border: 2px solid #4CAF50;
+        }
+
+        .stSelectbox, .stNumberInput, .stTextInput {
+            border-radius: 8px;
+            border: 1px solid #ccc;
+            padding: 10px;
+            font-size: 16px;
+        }
+
+        .stContainer {
+            border-radius: 8px;
+            background-color: #f9f9f9;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .stAlert {
+            border-radius: 8px;
+            padding: 20px;
+            margin: 10px 0;
+            font-size: 16px;
+        }
+
+        .stImage img {
+            border-radius: 8px;
+        }
+
+        .stContainer .stHeader h2 {
+            font-family: 'Arial', sans-serif;
+            font-size: 24px;
+        }
+    </style>
+""", unsafe_allow_html=True)
 
 tabs = st.columns(2)
 if tabs[0].button('Predict Crop Yield'):
