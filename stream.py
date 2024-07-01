@@ -103,7 +103,7 @@ if 'show_calculator' not in st.session_state:
 
 # Display image
 image_url = "https://picsum.photos/800/400?category=nature"
-st.image(image_url, caption="Random Agriculture Image", use_column_width=True)
+st.image(image_url, use_column_width=True)
 
 # Add buttons for Prediction and Recommendation
 
