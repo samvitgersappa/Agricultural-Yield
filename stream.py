@@ -102,8 +102,8 @@ if 'show_calculator' not in st.session_state:
     st.session_state.show_calculator = False
 
 # Display image
-image_url = "https://upload.wikimedia.org/wikipedia/commons/3/3f/Agriculture_in_Vietnam_with_farmers_in_field.jpg"
-st.image(image_url, caption="Agriculture in Vietnam", use_column_width=True)
+image_url = "https://picsum.photos/800/400?category=nature"
+st.image(image_url, caption="Random Agriculture Image", use_column_width=True)
 
 # Add buttons for Prediction and Recommendation
 
