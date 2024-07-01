@@ -102,9 +102,14 @@ if 'show_calculator' not in st.session_state:
     st.session_state.show_calculator = False
 
 # Display image
-response = requests.get("https://source.unsplash.com/600x400/?agriculture")
-image = Image.open(BytesIO(response.content))
-st.image(image, use_column_width=True)
+try:
+    response = requests.get("https://source.unsplash.com/600x400/?agriculture")
+    response.raise_for_status()  # Raise an exception for bad responses
+    image = Image.open(BytesIO(response.content))
+    st.image(image, use_column_width=True)
+except Exception as e:
+    st.warning(f"Failed to load image. Error: {str(e)}")
+    st.write("Continuing without the image...")
 
 # Add buttons for Prediction and Recommendation
 
