@@ -103,10 +103,11 @@ if 'show_calculator' not in st.session_state:
 
 # Display image
 try:
-    response = requests.get("https://source.unsplash.com/600x400/?agriculture")
+    image_url = "https://upload.wikimedia.org/wikipedia/commons/3/3f/Agriculture_in_Vietnam_with_farmers_in_field.jpg"
+    response = requests.get(image_url)
     response.raise_for_status()  # Raise an exception for bad responses
     image = Image.open(BytesIO(response.content))
-    st.image(image, use_column_width=True)
+    st.image(image, caption="Agriculture in Vietnam", use_column_width=True)
 except Exception as e:
     st.warning(f"Failed to load image. Error: {str(e)}")
     st.write("Continuing without the image...")
